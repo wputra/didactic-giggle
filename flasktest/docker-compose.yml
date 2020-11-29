@@ -4,5 +4,28 @@ services:
     image: "wputra/flasktest:latest"
     ports:
       - "5000:5000"
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: flask
+      DB_PASSWORD: fl45k
+      DB_NAME: urls
   redis:
     image: "redis:alpine"
+    restart: always
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: r00t
+      MYSQL_DATABASE: urls
+      MYSQL_USER: flask
+      MYSQL_PASSWORD: fl45k
+
+volumes:
+  db_data: {}
