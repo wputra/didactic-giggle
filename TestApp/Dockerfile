@@ -1,5 +1,0 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.6-alpine3.7
-ENV STATIC_URL /static
-ENV STATIC_PATH /var/www/app/static
-COPY . /var/www/
-RUN pip install -r /var/www/requirements.txt
