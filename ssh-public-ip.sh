@@ -43,7 +43,8 @@ fi
 
 # ssh to the instance
 if [[ ${#PUBLIC_IP} -ge 8 ]]; then
+  echo "SSH to $PUBLIC_IP with user $USER"
   ssh $USER@$PUBLIC_IP
 else
-  echo "Hostnotfound"
+  echo "HostNotFound"
 fi
