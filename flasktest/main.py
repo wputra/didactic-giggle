@@ -16,10 +16,24 @@ except ImportError:
     from string import lowercase as ascii_lowercase
     from string import uppercase as ascii_uppercase
 import base64
+import time
+import redis
 
 # Assuming urls.db is in your app root folder
 app = Flask(__name__)
 host = 'http://192.168.77.10:5000/'
+cache = redis.Redis(host='redis', port=6379)
+
+def get_hit_count():
+    retries = 5
+    while True:
+        try:
+            return cache.incr('hits')
+        except redis.exceptions.ConnectionError as exc:
+            if retries == 0:
+                raise exc
+            retries -= 1
+            time.sleep(0.5)
 
 
 def table_check():
@@ -61,7 +75,8 @@ def toBase10(num, b=62):
 
 @app.route('/')
 def hello():
-    return 'Hello World !!'
+    count = get_hit_count()
+    return 'Hello from Docker!! I have been seen {} times.\n'.format(count)
 
 @app.route('/newurl', methods=['GET', 'POST'])
 def newurl():
