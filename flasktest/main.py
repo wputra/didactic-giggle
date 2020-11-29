@@ -59,9 +59,12 @@ def toBase10(num, b=62):
         res = b * res + base.find(num[i])
     return res
 
+@app.route('/')
+def hello():
+    return 'Hello World !!'
 
-@app.route('/', methods=['GET', 'POST'])
-def home():
+@app.route('/newurl', methods=['GET', 'POST'])
+def newurl():
     if request.method == 'POST':
         original_url = str_encode(request.form.get('url'))
         if urlparse(original_url).scheme == '':
