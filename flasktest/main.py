@@ -19,7 +19,6 @@ import base64
 
 # Assuming urls.db is in your app root folder
 app = Flask(__name__)
-host = 'http://localhost:5000/'
 
 
 def table_check():
@@ -80,7 +79,7 @@ def home():
             encoded_string = toBase62(res.lastrowid)
 
         return render_template('home.html', short_url=host + encoded_string)
-        
+
     return render_template('home.html')
 
 
@@ -89,7 +88,7 @@ def redirect_short_url(short_url):
     decoded = toBase10(short_url)
     url = host  # fallback if no URL is found
 
-    try: 
+    try:
         with sqlite3.connect('urls.db') as conn:
             cursor = conn.cursor()
             res = cursor.execute('SELECT URL FROM WEB_URL WHERE ID=?', [decoded])
