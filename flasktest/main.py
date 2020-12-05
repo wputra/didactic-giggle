@@ -64,7 +64,7 @@ def redirect_short_url(short_url):
     try:
         lurl = cache.get(short_url)
         if lurl is None:
-            lurl = host + "/newurl"  # fallback if no URL is found
+            lurl = host + "newurl"  # fallback if no URL is found
 
         return redirect(lurl)
     except redis.exceptions.ConnectionError as exc:
