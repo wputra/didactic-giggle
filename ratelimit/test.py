@@ -22,6 +22,11 @@ def request_is_limited(t, key, limit, period):
                 new_tat = max(tat, t) + separation
                 r.set(key, new_tat)
                 return False
+            r.set(key+"_start", t + 600)
+            if t > float(r.get(key+"_start")):
+                r.set(key, 0)
+            else:
+                r.set(key, t + 600)
             return True
     except LockError:
         return True
