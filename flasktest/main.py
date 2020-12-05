@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, redirect
+from envparse import env
 import string
 import random
 import time
@@ -11,7 +12,7 @@ except ImportError:
     str_encode = str
 
 app = Flask(__name__)
-host = 'http://192.168.77.10:5000/'
+host = env('FLASK_APP_HOST')
 cache = redis.Redis(host='redis', port=6379)
 
 def get_hit_count():
