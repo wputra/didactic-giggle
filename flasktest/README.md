@@ -11,5 +11,4 @@ A URL shortening Flask micro website similar to bit.ly
 
 # TO DO
 - Write explaination about system design: why you are going to implement like that.
-- change from sqlite to mysql. check current implementation.
 - use redis as cache. the key is short_url, value is long_url
