@@ -3,7 +3,12 @@ import string
 import random
 import time
 import redis
-import urlparse
+try:
+    from urllib.parse import urlparse  # Python 3
+    str_encode = str.encode
+except ImportError:
+    from urlparse import urlparse  # Python 2
+    str_encode = str
 
 app = Flask(__name__)
 host = 'http://192.168.77.10:5000/'
@@ -45,7 +50,7 @@ def hello():
 def newurl():
     if request.method == 'POST':
         surl = short_url_generator()
-        lurl = str(request.form.get('url'))
+        lurl = str_encode(request.form.get('url'))
 
         set_url(surl, lurl)
 
