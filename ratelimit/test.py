@@ -18,8 +18,9 @@ def parse_input(input_file):
             log_timestamp = log_list[3] + log_list[4]
             timestamp = convert_unix_timestamp(log_timestamp)
             ip = log_list[0]
+            path = log_list[6]
             decision = "BAN"
-            print(timestamp, decision, ip)
+            print(f'{timestamp},{decision},{ip},{path}')
 
 
 # main
