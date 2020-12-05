@@ -46,7 +46,7 @@ def newurl():
 
         set_url(surl, lurl)
 
-        return render_template('home.html', short_url = host + surl)
+        return render_template('home.html', short_url = host + surl), 201
 
     return render_template('home.html')
 
