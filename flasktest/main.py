@@ -19,6 +19,10 @@ def get_hit_count():
             retries -= 1
             time.sleep(0.5)
 
+def short_url_generator(size=9):
+    chars = string.ascii_letters + string.digits
+    return ''.join(random.choice(chars) for _ in range(size))
+
 def set_url(short_url, long_url):
     retries = 5
     while True:
