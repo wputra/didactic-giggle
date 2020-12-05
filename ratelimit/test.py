@@ -7,16 +7,16 @@ def convert_unix_timestamp(datestring):
     d = datetime.datetime.strptime(datestring, format)
     d = d.astimezone(utc)
     ts = (d - epoch).total_seconds()
-    return int(ts)
+    return ts
 
 def request_is_limited(t, key, limit, period):
-    period_in_seconds = int(period.total_seconds())
-    separation = round(period_in_seconds / limit)
+    period_in_seconds = period.total_seconds()
+    separation = period_in_seconds / limit
     r.setnx(key, 0)
     try:
         with r.lock('lock:' + key, blocking_timeout=5) as lock:
-            tat = max(int(r.get(key)), t)
-            if tat - t <= period_in_seconds - separation:
+            tat = max(float(r.get(key)), t)
+            if tat - t + separation <= period_in_seconds - separation:
                 new_tat = max(tat, t) + separation
                 r.set(key, new_tat)
                 return False
