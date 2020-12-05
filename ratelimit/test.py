@@ -9,8 +9,9 @@ def convert_unix_timestamp(datestring):
     ts = (d - epoch).total_seconds()
     return ts
 
-def request_is_limited(t, key, limit, period):
+def request_is_limited(t, key, limit, period, ban):
     period_in_seconds = period.total_seconds()
+    ban_in_seconds = ban.total_seconds()
     separation = period_in_seconds / limit
     r.setnx(key, 0)
     r.setnx(key+"_start", t)
@@ -22,11 +23,11 @@ def request_is_limited(t, key, limit, period):
                 new_tat = max(tat, t) + separation
                 r.set(key, new_tat)
                 return False
-            r.set(key+"_start", t + 600)
+            r.set(key+"_start", t + ban_in_seconds)
             if t > float(r.get(key+"_start")):
                 r.set(key, 0)
             else:
-                r.set(key, t + 600)
+                r.set(key, t + ban_in_seconds)
             return True
     except LockError:
         return True
@@ -39,7 +40,7 @@ def parse_input(input_file):
             timestamp = convert_unix_timestamp(log_timestamp)
             ip = log_list[0]
 
-            if request_is_limited(timestamp, ip, 40, datetime.timedelta(minutes=1)):
+            if request_is_limited(timestamp, ip, 40, datetime.timedelta(minutes=1), datetime.timedelta(minutes=10)):
                 decision = "BAN"
             #elif request_is_limited(timestamp, ip, 100, datetime.timedelta(minutes=10)):
             #    decision = "BAN"
