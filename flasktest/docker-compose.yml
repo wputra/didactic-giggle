@@ -11,6 +11,9 @@ services:
       DB_USER: flask
       DB_PASSWORD: fl45k
       DB_NAME: urls
+      FLASK_APP: main.py
+      FLASK_RUN_HOST: 0.0.0.0
+      FLASK_APP_HOST: http://192.168.77.10:5000/
   redis:
     image: "redis:alpine"
     restart: always
