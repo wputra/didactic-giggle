@@ -22,7 +22,9 @@ def set_url(short_url, long_url):
             time.sleep(0.5)
 
 surl = short_url_generator()
-lurl = "https://example.com"
+lurl = cache.get("ksalfsdfs")
 
-set_url(surl, lurl)
-print(cache.get(surl))
+if lurl is None:
+    print("Home")
+else:
+    print(lurl)

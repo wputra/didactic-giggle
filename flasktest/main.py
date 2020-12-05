@@ -61,13 +61,17 @@ def newurl():
 
 @app.route('/<short_url>')
 def redirect_short_url(short_url):
-    lurl = host + "/newurl"  # fallback if no URL is found
-
     try:
         lurl = cache.get(short_url)
+        if lurl is None:
+            lurl = host + "/newurl"  # fallback if no URL is found
+
         return redirect(lurl)
-    except OverflowError as e:
-        print(str(e))
+    except redis.exceptions.ConnectionError as exc:
+        if retries == 0:
+            raise exc
+        retries -= 1
+        time.sleep(0.5)
 
 
 if __name__ == '__main__':
