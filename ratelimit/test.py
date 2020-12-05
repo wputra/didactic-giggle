@@ -13,10 +13,12 @@ def request_is_limited(t, key, limit, period):
     period_in_seconds = period.total_seconds()
     separation = period_in_seconds / limit
     r.setnx(key, 0)
+    r.setnx(key+"_start", t)
     try:
         with r.lock('lock:' + key, blocking_timeout=5) as lock:
+            t = min(float(r.get(key+"_start")), t)
             tat = max(float(r.get(key)), t)
-            if tat - t + separation <= period_in_seconds - separation:
+            if tat - t <= period_in_seconds - separation:
                 new_tat = max(tat, t) + separation
                 r.set(key, new_tat)
                 return False
