@@ -49,8 +49,12 @@ def hello():
 @app.route('/newurl', methods=['GET', 'POST'])
 def newurl():
     if request.method == 'POST':
-        surl = short_url_generator()
         lurl = str_encode(request.form.get('url'))
+
+        while True:
+            surl = short_url_generator()
+            if cache.get(surl) is None:
+                break
 
         set_url(surl, lurl)
 
