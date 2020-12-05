@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import datetime
 import pytz
-import dateutil.parser
 
 def convert_unix_timestamp(datestring):
     format = '[%d/%b/%Y:%H:%M:%S%z]'
