@@ -3,9 +3,6 @@ import datetime
 import pytz
 
 def convert_unix_timestamp(datestring):
-    format = '[%d/%b/%Y:%H:%M:%S%z]'
-    utc = pytz.UTC
-    epoch = datetime.datetime(1970,1,1,0,0,0,tzinfo=utc)
     d = datetime.datetime.strptime(datestring, format)
     d = d.astimezone(utc)
     ts = (d - epoch).total_seconds()
@@ -24,4 +21,7 @@ def parse_input(input_file):
 
 
 # main
+format = '[%d/%b/%Y:%H:%M:%S%z]'
+utc = pytz.UTC
+epoch = datetime.datetime(1970,1,1,0,0,0,tzinfo=utc)
 parse_input("test.log")
