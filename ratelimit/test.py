@@ -5,9 +5,12 @@ import dateutil.parser
 
 def convert_unix_timestamp(datestring):
     format = '[%d/%b/%Y:%H:%M:%S%z]'
+    utc = pytz.UTC
+    epoch = datetime.datetime(1970,1,1,0,0,0,tzinfo=utc)
     d = datetime.datetime.strptime(datestring, format)
-    #d = d.replace(tzinfo=utc) - d.utcoffset()
-    return d
+    d = d.astimezone(utc)
+    ts = (d - epoch).total_seconds()
+    return int(ts)
 
 def parse_input(input_file):
     with open(input_file, 'r') as in_file:
