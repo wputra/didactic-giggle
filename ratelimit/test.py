@@ -15,6 +15,7 @@ def request_is_limited(t, key, limit, period, ban):
     separation = period_in_seconds / limit
     r.setnx(key, 0)
     r.setnx(key+"_start", t)
+    input_t = t
     try:
         with r.lock('lock:' + key, blocking_timeout=5) as lock:
             t = min(float(r.get(key+"_start")), t)
@@ -23,11 +24,9 @@ def request_is_limited(t, key, limit, period, ban):
                 new_tat = max(tat, t) + separation
                 r.set(key, new_tat)
                 return False
-            r.set(key+"_start", t + ban_in_seconds)
-            if t > float(r.get(key+"_start")):
-                r.set(key, 0)
             else:
                 r.set(key, t + ban_in_seconds)
+                r.set(key+"_start", input_t)
             return True
     except LockError:
         return True
