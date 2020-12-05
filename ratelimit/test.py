@@ -39,19 +39,19 @@ def parse_input(input_file):
             timestamp = convert_unix_timestamp(log_timestamp)
             ip = log_list[0]
 
-            if request_is_limited(timestamp, ip, 40, datetime.timedelta(minutes=1), datetime.timedelta(minutes=10)):
+            if request_is_limited(timestamp, ip+"_1m", 40, datetime.timedelta(minutes=1), datetime.timedelta(minutes=10)):
                 decision = "BAN"
-            #elif request_is_limited(timestamp, ip, 100, datetime.timedelta(minutes=10)):
-            #    decision = "BAN"
+            elif request_is_limited(timestamp, ip+"_10m", 100, datetime.timedelta(minutes=10), datetime.timedelta(minutes=60)):
+                decision = "BAN"
             else:
                 decision = "UNBAN"
 
-            #path = log_list[6]
-            #if path == "/login":
-            #    if request_is_limited(timestamp, ip+"_login", 20, datetime.timedelta(minutes=10)):
-            #        decision = "BAN"
-            #    else:
-            #        decision = "UNBAN"
+            path = log_list[6]
+            if path == "/login":
+                if request_is_limited(timestamp, ip+"_login", 20, datetime.timedelta(minutes=10), datetime.timedelta(minutes=120)):
+                    decision = "BAN"
+                else:
+                    decision = "UNBAN"
 
             print(f'{int(timestamp)},{decision},{ip}')
 
