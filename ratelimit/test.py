@@ -34,17 +34,17 @@ def parse_input(input_file):
 
             if request_is_limited(timestamp, ip, 40, datetime.timedelta(minutes=1)):
                 decision = "BAN"
-            elif request_is_limited(timestamp, ip, 100, datetime.timedelta(minutes=10)):
-                decision = "BAN"
+            #elif request_is_limited(timestamp, ip, 100, datetime.timedelta(minutes=10)):
+            #    decision = "BAN"
             else:
                 decision = "UNBAN"
 
-            path = log_list[6]
-            if path == "/login":
-                if request_is_limited(timestamp, ip+"_login", 20, datetime.timedelta(minutes=10)):
-                    decision = "BAN"
-                else:
-                    decision = "UNBAN"
+            #path = log_list[6]
+            #if path == "/login":
+            #    if request_is_limited(timestamp, ip+"_login", 20, datetime.timedelta(minutes=10)):
+            #        decision = "BAN"
+            #    else:
+            #        decision = "UNBAN"
 
             print(f'{timestamp},{decision},{ip}')
 
