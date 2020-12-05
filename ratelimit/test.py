@@ -53,7 +53,7 @@ def parse_input(input_file):
             #    else:
             #        decision = "UNBAN"
 
-            print(f'{timestamp},{decision},{ip}')
+            print(f'{int(timestamp)},{decision},{ip}')
 
 
 # main
