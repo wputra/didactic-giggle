@@ -66,7 +66,7 @@ def redirect_short_url(short_url):
         if lurl is None:
             lurl = host + "newurl"  # fallback if no URL is found
 
-        return redirect(lurl)
+        return redirect(lurl, code=304)
     except redis.exceptions.ConnectionError as exc:
         if retries == 0:
             raise exc
