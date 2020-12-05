@@ -1,31 +1,18 @@
 from flask import Flask, request, render_template, redirect
+from urllib.parse import urlparse
 from envparse import env
 import string
 import random
 import time
 import redis
-try:
-    from urllib.parse import urlparse  # Python 3
-    str_encode = str.encode
-except ImportError:
-    from urlparse import urlparse  # Python 2
-    str_encode = str
 
+
+str_encode = str.encode
 app = Flask(__name__)
 host = env('FLASK_APP_HOST')
 cache = redis.Redis(host='redis', port=6379)
 cache_read = redis.Redis(host='redis_read', port=6379)
 
-def get_hit_count():
-    retries = 5
-    while True:
-        try:
-            return cache.incr('hits')
-        except redis.exceptions.ConnectionError as exc:
-            if retries == 0:
-                raise exc
-            retries -= 1
-            time.sleep(0.5)
 
 def short_url_generator(size=9):
     chars = string.ascii_letters + string.digits
@@ -45,8 +32,7 @@ def set_url(short_url, long_url):
 
 @app.route('/')
 def hello():
-    count = get_hit_count()
-    return 'Hello from Docker!! I have been seen {} times.\n'.format(count)
+    return 'Hello from Docker!!\n'
 
 @app.route('/newurl', methods=['GET', 'POST'])
 def newurl():
