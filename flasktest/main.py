@@ -14,6 +14,7 @@ except ImportError:
 app = Flask(__name__)
 host = env('FLASK_APP_HOST')
 cache = redis.Redis(host='redis', port=6379)
+cache_read = redis.Redis(host='redis_read', port=6379)
 
 def get_hit_count():
     retries = 5
@@ -54,7 +55,7 @@ def newurl():
 
         while True:
             surl = short_url_generator()
-            if cache.get(surl) is None:
+            if cache_read.get(surl) is None:
                 break
 
         set_url(surl, lurl)
@@ -67,7 +68,7 @@ def newurl():
 @app.route('/<short_url>')
 def redirect_short_url(short_url):
     try:
-        lurl = cache.get(short_url)
+        lurl = cache_read.get(short_url)
         if lurl is None:
             lurl = host + "newurl"  # fallback if no URL is found
 
