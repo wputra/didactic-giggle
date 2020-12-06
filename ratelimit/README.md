@@ -7,7 +7,7 @@ The [script](parse_ratelimit.py) will parse log from input file, convert its tim
 - Python3
 - pip3
 
-# How To
+# Usage
 - spin up redis server: `docker-compose up -d`
 - install python pequirement: `pip3 install -r requirements.txt`
 - run the script: `python3 parse_ratelimit.py`
