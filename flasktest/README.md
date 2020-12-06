@@ -37,7 +37,7 @@ This program will be responsible to backup short string and long url data pair t
 With this approach, later we can always restore the data from MySQL to Redis - in case we partially/completely loss the data in Redis.
 
 ## Flow Chart
-![Flow Chart](flowchart-2.png)
+![Flow Chart](flowchart.png)
 
 ## Implementation Assumption​
 - Required infrastructure to run this application hosted across multiple AZs
