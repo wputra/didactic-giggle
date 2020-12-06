@@ -39,5 +39,9 @@ With this approach, later we can always restore the data from MySQL to Redis - i
 ## Flow Chart
 ![Flow Chart](flowchart-2.png)
 
-# Limitation
-- Please​ state​ any​ assumption​ and​ limitation​ of​ ​the system​ implemented.
+## Assumption​
+- Required infrastructure to run this application hosted across multiple AZs
+- Using cloud provider managed service (i.e ALB, ElastiCache, Aurora), since they already provide HA Design, easier to scale and having SLA for availability/reliability.
+
+## Limitation
+- The *generator* and *durable* not implemented in the code within this repo. Short string is generated randomly from the *app*, and having mechanism to avoid its duplication. The *app* will check only if short string does not have any value from read-only Redis, then it will write short string & long url data pair to writeable Redis.
