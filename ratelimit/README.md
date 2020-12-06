@@ -1,5 +1,5 @@
 # Q1.​ Rate-limiting
-The [script](parse_ratelimit.py) will parse log from input file, convert its timestamp to unix timestamp, then doing calculation based on defined rules to BAN/UNBAN the IPs. This script need redis to doing the calculation,
+The [script](parse_ratelimit.py) will parse log from input file, convert its timestamp to unix timestamp, then doing calculation based on defined rules to BAN/UNBAN the IPs. This script need redis to doing the calculation. Having comma separate value as output.
 
 # Requirement
 - Docker (v19.03.12)
@@ -13,4 +13,4 @@ The [script](parse_ratelimit.py) will parse log from input file, convert its tim
 - run the script: `python3 parse_ratelimit.py`
 
 # Limitation
-- using Generic Cell Rate Algorithm to doing rate limiting. it may more suitable to do real time rate limiting.
+- Using Generic Cell Rate Algorithm to do rate limiting. It may more suitable to do real time rate limiting.
