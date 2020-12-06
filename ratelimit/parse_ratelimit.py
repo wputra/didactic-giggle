@@ -35,10 +35,11 @@ def parse_input(input_file):
     with open(input_file, 'r') as in_file:
         for line in in_file:
             log_list = line.split()
+
             log_timestamp = log_list[3] + log_list[4]
             timestamp = convert_unix_timestamp(log_timestamp)
-            ip = log_list[0]
 
+            ip = log_list[0]
             if request_is_limited(timestamp, ip+"_1m", 40, datetime.timedelta(minutes=1), datetime.timedelta(minutes=10)):
                 decision = "BAN"
             elif request_is_limited(timestamp, ip+"_10m", 100, datetime.timedelta(minutes=10), datetime.timedelta(minutes=60)):
