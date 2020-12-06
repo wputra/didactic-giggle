@@ -1,5 +1,5 @@
 # Q3. System Design and Implementation
-A URL shortening Flask micro website similar to bit.ly. the `/newurl` endpoint will receive long url as input, and store it to redis as key value pair. In this case, key is short string that generated beforehand and value is long url. When `/{short string}` endpoint is accessed, it will redirect to long url
+A URL shortening Flask micro website similar to bit.ly. The `/newurl` endpoint will receive long url as input, and store it to redis as key value pair. In this case, key is short string that generated beforehand and value is long url from the input. When `/{short string}` endpoint is accessed, it will redirect to long url
 
 # Requirement
 - Docker (v19.03.12)
@@ -17,6 +17,15 @@ To address system​ design​ concern such as high availability, scalability an
 
 ## Infrastructure​ Configuration
 ![Infrastructure Diagram](System-Design.png)
+
+## generator
+
+## app
+
+## durable
+
+## Flow Chart
+![Flow Chart](flowchart-2.png)
 
 # Limitation
 - Please​ state​ any​ assumption​ and​ limitation​ of​ ​the system​ implemented.
