@@ -1,5 +1,5 @@
 # Q3. System Design and Implementation
-A URL shortening Flask micro website similar to bit.ly. The `/newurl` endpoint will receive long url as input, and store it to redis as key value pair. In this case, key is short string that generated beforehand and value is long url from the input. When `/{short string}` endpoint is accessed, it will redirect to long url
+A URL shortening Flask micro website similar to bit.ly. The `/newurl` endpoint will receive long url as input, and store it to redis as key value pair. In this case, key is short string that generated beforehand and value is long url from the input. When `/<short_url>` endpoint is accessed, it will redirect to long url
 
 # Requirement
 - Docker (v19.03.12)
@@ -18,11 +18,23 @@ To address system​ design​ concern such as high availability, scalability an
 ## Infrastructure​ Configuration
 ![Infrastructure Diagram](System-Design.png)
 
-## generator
+## *generator*
+This program will be responsible to generate short string that will be used in short url. The *generator* will generate a list of sequential string, shuffle the list to rearrange its sequence, split the list to N number of list (smaller list), and put each list to a queue. Basically, *generator* is queue producer/publisher. We can use Kafka for this approach.
 
-## app
+In our case, it will have maximum (26+26+10)^9 number of string. The *generator* may only generate small sequence first, then later generate next sequence when the queue started to consumed by the app. The reason why we generate the string beforehand is to ensure short url never get duplicated.
 
-## durable
+## *app*
+This program will be responsible to serving user request. The *app* will receive long url as input within `/newurl` endpoint, consume from random queue in Kafka to get short string, set to Redis with short string as key & long url as value, then return short url to the user with 201 http code. Basically, *app* is queue consumer/subscriber.
+
+After the *app* successfully return short url to user, it will put same short string to another queue to be consumed by
+*durable* program.
+
+When the user accessing `/<short_url>`, the *app* will get long url (value) using short string (key) from read-only Redis. If value is exist, *app* will redirect user to long url with 304 http code. Otherwise, will redirected to `/newurl`
+
+## *durable*
+This program will be responsible to backup short string and long url data pair to another database that more durable and designed as long term storage. We can use MySQL for this approach. The *durable* will consume from *durable* queue to get short string that already consumed by *app*, then it will get the value (long url) from read-only Redis, and finally write the data (short string and long url pair) to MySQL master.
+
+With this approach, later we can always restore the data from MySQL to Redis - in case we partially/completely loss the data in Redis.
 
 ## Flow Chart
 ![Flow Chart](flowchart-2.png)
